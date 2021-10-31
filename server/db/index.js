@@ -4,8 +4,6 @@ const db = new Sequelize(
   "postgres://localhost:5432/moviewatchlist"
 )
 
-module.exports = db;
-
 const Movie = db.define("movie", {
   title: {
     type: Sequelize.STRING,
@@ -37,3 +35,9 @@ const Genre = db.define("genre", {
 
 Movie.belongsToMany(Genre, { through: "movies-genres" });
 Genre.belongsToMany(Movie, { through: "movies-genres" });
+
+module.exports = {
+  db,
+  Movie,
+  Genre
+};

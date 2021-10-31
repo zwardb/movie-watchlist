@@ -1,4 +1,4 @@
-const db = require("./index");
+const { db } = require("./index");
 
 const runSeed = async() => {
   await db.sync({ force: true });
