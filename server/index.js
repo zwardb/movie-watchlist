@@ -13,12 +13,18 @@ const startServer = async() => {
 }
 startServer();
 
+// Matches any url to a possible file in the public directory.
+app.use(express.static(__dirname + "/public"));
+
 // Start of all middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 const genresRouter = require("./routes/genre");
 app.use("/genre", genresRouter);
+
+const moviesRouter = require("./routes/movie");
+app.use("/movies", moviesRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello :)");
