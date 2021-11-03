@@ -27,5 +27,18 @@ const moviesRouter = require("./routes/movie");
 app.use("/movies", moviesRouter);
 
 app.get("/", (req, res) => {
-  res.send("Hello :)");
+  res.send(
+    `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Movie Watchlist App</title>
+        </head>
+        <body>
+          <div id="app"></div>
+          <script src="/bundle.js"></script>
+        </body>
+      </html>
+    `
+  );
 });
