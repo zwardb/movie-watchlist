@@ -1,6 +1,10 @@
 import React from 'react';
 import axios from 'axios';
 
+import {connect} from 'react-redux';
+
+import {fetchMoviesFromServer} from '../store/movies'
+
 class Movie extends React.Component {
   render() {
     const { theMovie } = this.props;
@@ -18,26 +22,17 @@ class Movie extends React.Component {
 }
 
 class MovieList extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      fetchedMovies: null
-    }
-  }
-  async componentDidMount() {
-    // THIS WILL BE REFACOTRED LATER TO USE THUNKS
-    const response = await axios.get("/movies");
-    const ourMovies = response.data;
-    this.setState({ fetchedMovies: ourMovies });
+  componentDidMount() {
+    this.props.fetchMovies();
   }
   render() {
-    if (this.state.fetchedMovies === null) {
+    if (this.props.moviesFromState.length === 0) {
       return <h3>Loading...</h3>
     }
     return (
       <div id="movie-list">
           <ul id="list-of-movies">
-            {this.state.fetchedMovies.map(aMovie => {
+            {this.props.moviesFromState.map(aMovie => {
               return <Movie key={aMovie.id} theMovie={aMovie} />;
             })}
           </ul>
@@ -46,4 +41,24 @@ class MovieList extends React.Component {
   }
 }
 
-export default MovieList;
+
+
+export default connect(
+  // Map State to Props,
+  // anything we want from the redux store
+  (fullReduxState) => {
+    return {
+      moviesFromState: fullReduxState.movies
+    }
+  },
+
+  //Map Dispatch to Props,
+  // access to the dispatch function of the redux state to send actions
+  (dispatchToStore) => {
+    return {
+      fetchMovies: async () => {
+        dispatchToStore(fetchMoviesFromServer());
+      }
+    };
+  }
+)(MovieList);
