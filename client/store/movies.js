@@ -15,3 +15,10 @@ export const fetchMoviesFromServer = () => {
     dispatch(setMoviesOnStore(movies));
   }
 }
+
+export default (state = [], action) => { // Initial state of movies: [] (no movies known)
+  if (action.type === SET_MOVIES) {
+    return action.moviesArray;
+  }
+  return state;
+}
