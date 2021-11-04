@@ -1,6 +1,7 @@
 import React from 'react';
 import MovieList from './MovieList';
 import GenreForm from './GenreForm';
+import NewMovieForm from './NewMovieForm';
 
 class App extends React.Component {
   render() {
@@ -12,8 +13,9 @@ class App extends React.Component {
           <a>I'm Feeling Lucky</a>
           <a>Add to Watchlist</a>
         </nav>
-        {/* <MovieList /> */}
-        <GenreForm />
+        <MovieList />
+        {/* <GenreForm /> */}
+        <NewMovieForm />
       </div>
     )
   }

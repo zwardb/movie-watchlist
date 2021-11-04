@@ -16,6 +16,22 @@ export const fetchMoviesFromServer = () => {
   }
 }
 
+export const createMovie = (newMovieInfo) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post("/movies", {
+        title: newMovieInfo.title,
+        link: newMovieInfo.link,
+        genres: newMovieInfo.genres
+      });
+      const newMovieCreated = response.data;
+      return newMovieCreated;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
 export default (state = [], action) => { // Initial state of movies: [] (no movies known)
   if (action.type === SET_MOVIES) {
     return action.moviesArray;

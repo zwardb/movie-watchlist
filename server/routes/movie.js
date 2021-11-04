@@ -195,7 +195,10 @@ router.post("/", async (req, res, next) => {
       imdbLink: link || null
     });
     await newMovie.setGenres(genres);
-    res.redirect("/movies");
+    const newMovieWithGenres = await Movie.findByPk(newMovie.id, {
+      include: [Genre]
+    });
+    res.json(newMovieWithGenres);
   } catch (error) {
     next(error);
   }
