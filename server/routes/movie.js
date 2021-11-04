@@ -6,76 +6,91 @@ module.exports = router;
 const { Movie, Genre } = require("../db");
 
 // GET /movies
+// router.get("/", async (req, res, next) => {
+//   const onlyUnwatched = req.query.unwatched === "1";
+//   const genreName = req.query.genre;
+//   const whereClause = {};
+
+//   if (onlyUnwatched) {
+//     whereClause.watched = false;
+//   }
+
+//   try {
+//     let movies;
+//     if (genreName) {
+//       const specificGenre = await Genre.findOne({
+//         where: {
+//           name: genreName
+//         }
+//       });
+//       if (!genreName) {
+//         res.status(404).send("Unknown genre");
+//         return;
+//       }
+//       movies = await specificGenre.getMovies({
+//         include: [Genre],
+//         order: [
+//           ["title", "ASC"]
+//         ],
+//         where: whereClause
+//       });
+//     } else {
+//       movies = await Movie.findAll({
+//         include: [Genre],
+//         order: [
+//           ["title", "ASC"]
+//         ],
+//         where: whereClause
+//       });
+//     }
+//     res.send(`
+//       <!DOCTYPE html>
+//       <html>
+//         <head>
+//           <title>Movie List</title>
+//           <link rel="stylesheet" type="text/css" href="/base-styling.css" />
+//           <link rel="stylesheet" type="text/css" href="/movie-list-style.css" />
+//         </head>
+//         <body>
+//           <h1>Movie List</h1>
+//           <nav>
+//             <a href="/movies?unwatched=1">Only Unwatched</a>
+//             <a href="/movies/feeling-lucky">I'm Feeling Lucky</a>
+//             <a href="/movies/add-movie">Add to Watchlist</a>
+//           </nav>
+//           <ul id="list-of-movies">
+//             ${movies.map((movie) => {
+//               return `
+//                 <li class="${movie.watched === true ? "watched" : ""}">
+//                   <h2>${movie.title} ${movie.imdbLink ? `<a target="_blank" href="${movie.imdbLink}">IMDB</a>` : ""}</h2>
+//                   <ul class="genres-list">
+//                     ${movie.genres.map(genre => {
+//                       return `<li><a href="/movies?genre=${genre.name}">${genre.name}</a></li>`
+//                     }).join("")}
+//                   </ul>
+//                   ${movie.watched === false ? `<a class="watch-link" href="/movies/${movie.id}/mark-watched">I watched this!</a>` : ""}
+//                 </li>
+//               `
+//             }).join("")}
+//           </ul
+//         </body>
+//       </html>
+//     `);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+
+// GET /movies
 router.get("/", async (req, res, next) => {
-  const onlyUnwatched = req.query.unwatched === "1";
-  const genreName = req.query.genre;
-  const whereClause = {};
-
-  if (onlyUnwatched) {
-    whereClause.watched = false;
-  }
-
   try {
-    let movies;
-    if (genreName) {
-      const specificGenre = await Genre.findOne({
-        where: {
-          name: genreName
-        }
-      });
-      if (!genreName) {
-        res.status(404).send("Unknown genre");
-        return;
-      }
-      movies = await specificGenre.getMovies({
-        include: [Genre],
-        order: [
-          ["title", "ASC"]
-        ],
-        where: whereClause
-      });
-    } else {
-      movies = await Movie.findAll({
-        include: [Genre],
-        order: [
-          ["title", "ASC"]
-        ],
-        where: whereClause
-      });
-    }
-    res.send(`
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>Movie List</title>
-          <link rel="stylesheet" type="text/css" href="/base-styling.css" />
-          <link rel="stylesheet" type="text/css" href="/movie-list-style.css" />
-        </head>
-        <body>
-          <h1>Movie List</h1>
-          <nav>
-            <a href="/movies?unwatched=1">Only Unwatched</a>
-            <a href="/movies/feeling-lucky">I'm Feeling Lucky</a>
-            <a href="/movies/add-movie">Add to Watchlist</a>
-          </nav>
-          <ul id="list-of-movies">
-            ${movies.map((movie) => {
-              return `
-                <li class="${movie.watched === true ? "watched" : ""}">
-                  <h2>${movie.title} ${movie.imdbLink ? `<a target="_blank" href="${movie.imdbLink}">IMDB</a>` : ""}</h2>
-                  <ul class="genres-list">
-                    ${movie.genres.map(genre => {
-                      return `<li><a href="/movies?genre=${genre.name}">${genre.name}</a></li>`
-                    }).join("")}
-                  </ul>
-                  ${movie.watched === false ? `<a class="watch-link" href="/movies/${movie.id}/mark-watched">I watched this!</a>` : ""}
-                </li>
-              `
-            }).join("")}
-          </ul
-        </body>
-      </html>
-    `);
+    const movies = await Movie.findAll({
+      include: [Genre],
+      order: [
+        ["title", "ASC"]
+      ],
+    });
+    res.json(movies);
   } catch (error) {
     next(error);
   }

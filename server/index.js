@@ -33,6 +33,8 @@ app.get("/", (req, res) => {
       <html>
         <head>
           <title>Movie Watchlist App</title>
+          <link rel="stylesheet" type="text/css" href="/base-styling.css" />
+          <link rel="stylesheet" type="text/css" href="/movie-list-style.css" />
         </head>
         <body>
           <div id="app"></div>
