@@ -1,8 +1,5 @@
 import React from 'react';
-import axios from 'axios';
-
 import {connect} from 'react-redux';
-
 import {fetchMoviesFromServer} from '../store/movies'
 
 class Movie extends React.Component {

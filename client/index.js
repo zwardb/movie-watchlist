@@ -1,17 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
 import {Provider} from 'react-redux';
-
 import movieWatchlistReduxStore from './store';
-
-import store from './store';
-
 import App from './components/App';
+import { HashRouter } from 'react-router-dom';
 
 ReactDOM.render(
   <Provider store={movieWatchlistReduxStore}>
-    <App />
+    <HashRouter>
+      <App />
+    </HashRouter>
   </Provider>,
   document.querySelector('#app')
 );

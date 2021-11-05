@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { fetchGenresFromServer } from '../store/genres';
 import { createMovie } from '../store/movies';
+// import { useNavigate } from 'react-router-dom';
 
 class MovieForm extends React.Component {
   constructor() {
@@ -53,18 +54,21 @@ class MovieForm extends React.Component {
       howManyGenresBeingSelected: this.state.howManyGenresBeingSelected + 1
     });
   }
-  handleSubmit(submitEvent) {
+  async handleSubmit(submitEvent) {
+    // const navigate = useNavigate();
     submitEvent.preventDefault();
-    this.props.createNewMovieOnServer({
+    await this.props.createNewMovieOnServer({
       title: this.state.movieTitleTyped,
       link: this.state.imdbLinkTyped,
       genres: this.state.selectedGenres
     });
+    // navigate("/"); react-router updated to v6. navigate replaced history. can't use navigate in class component. need
+    // to refactor to functional component... -.-
   }
   render() {
     return (
       <div>
-        <form>
+        <form onSubmit={this.handleSubmit}>
           <div>
             <label>Movie Title:</label>
             <input type="text" name="movieTitle" onChange={this.handleInputChange} />
@@ -97,7 +101,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     createNewMovieOnServer: (newMovieInfo) => {
       const thunk = createMovie(newMovieInfo);
-      dispatch(thunk);
+      return dispatch(thunk);
     }
   };
 };

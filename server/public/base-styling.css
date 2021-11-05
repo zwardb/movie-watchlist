@@ -28,4 +28,8 @@ ul {
   padding: 0;
 }
 
+#logo {
+  text-decoration: none;
+  color: #000;
+}
 
